@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { MessageCircle, ShieldCheck, Clock, Users } from "lucide-react";
 import { getUtmParams, buildWhatsAppUrl, WHATSAPP_PHONE } from "@/lib/utm";
+import logo from "@/assets/logo-amor.png";
 
 const bullets = [
   { icon: Users, text: "Atendimento personalizado" },
@@ -25,6 +26,8 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
+          <img src={logo} alt="Amor Auxílio Maternidade" className="mx-auto mb-4 h-14 w-auto md:h-16" />
+
           <span className="mb-3 inline-block rounded-full bg-accent/10 px-3 py-1 font-heading text-xs font-semibold text-accent">
             Assessoria Especializada
           </span>
