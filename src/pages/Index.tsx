@@ -4,6 +4,7 @@ import EligibilitySection from "@/components/landing/EligibilitySection";
 import HowItWorks from "@/components/landing/HowItWorks";
 import LeadForm from "@/components/landing/LeadForm";
 import Testimonials from "@/components/landing/Testimonials";
+import TestimonialsGrid from "@/components/landing/TestimonialsGrid";
 import FAQ from "@/components/landing/FAQ";
 import CtaFinal from "@/components/landing/CtaFinal";
 import Footer from "@/components/landing/Footer";
@@ -16,6 +17,7 @@ const Index = () => (
     <EligibilitySection />
     <HowItWorks />
     <LeadForm />
+    <TestimonialsGrid />
     <Testimonials />
     <FAQ />
     <CtaFinal />
