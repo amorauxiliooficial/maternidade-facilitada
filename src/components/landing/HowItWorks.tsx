@@ -2,57 +2,38 @@ import { motion } from "framer-motion";
 import { Search, FileText, Bell } from "lucide-react";
 
 const steps = [
-  {
-    icon: Search,
-    title: "1. Análise gratuita",
-    description: "Avaliamos seu caso e verificamos se você se enquadra nos requisitos para o benefício.",
-  },
-  {
-    icon: FileText,
-    title: "2. Envio de documentos",
-    description: "Orientamos quais documentos são necessários e auxiliamos no envio correto ao INSS.",
-  },
-  {
-    icon: Bell,
-    title: "3. Acompanhamento",
-    description: "Monitoramos o andamento do seu processo e informamos cada etapa até a conclusão.",
-  },
+  { icon: Search, title: "1. Análise gratuita", desc: "Avaliamos se você se enquadra nos requisitos." },
+  { icon: FileText, title: "2. Documentação", desc: "Orientamos quais documentos enviar ao INSS." },
+  { icon: Bell, title: "3. Acompanhamento", desc: "Monitoramos seu processo até a conclusão." },
 ];
 
 const HowItWorks = () => (
-  <section className="bg-warm py-16 md:py-24">
-    <div className="container mx-auto px-4">
-      <motion.div
-        className="mx-auto max-w-2xl text-center"
-        initial={{ opacity: 0, y: 20 }}
+  <section className="bg-warm py-14 md:py-20">
+    <div className="container mx-auto px-5">
+      <motion.h2
+        className="mb-8 text-center font-heading text-2xl font-bold text-foreground md:text-3xl"
+        initial={{ opacity: 0, y: 15 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
       >
-        <h2 className="mb-3 font-heading text-3xl font-bold text-foreground md:text-4xl">
-          Como funciona?
-        </h2>
-        <p className="mb-12 text-muted-foreground">
-          Simples, rápido e sem complicação. Você não precisa sair de casa.
-        </p>
-      </motion.div>
+        Como funciona?
+      </motion.h2>
 
-      <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-3">
+      <div className="mx-auto grid max-w-lg gap-4 md:max-w-3xl md:grid-cols-3">
         {steps.map((step, i) => (
           <motion.div
             key={step.title}
-            className="relative rounded-2xl bg-card p-8 text-center shadow-card"
-            initial={{ opacity: 0, y: 30 }}
+            className="rounded-2xl bg-card p-6 text-center shadow-card"
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: i * 0.15 }}
+            transition={{ delay: i * 0.1 }}
           >
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
-              <step.icon className="h-7 w-7 text-primary" />
+            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+              <step.icon className="h-6 w-6 text-primary" />
             </div>
-            <h3 className="mb-2 font-heading text-lg font-bold text-card-foreground">
-              {step.title}
-            </h3>
-            <p className="text-sm text-muted-foreground">{step.description}</p>
+            <h3 className="mb-1 font-heading text-base font-bold text-card-foreground">{step.title}</h3>
+            <p className="text-sm text-muted-foreground">{step.desc}</p>
           </motion.div>
         ))}
       </div>
