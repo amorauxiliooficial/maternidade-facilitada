@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Play } from "lucide-react";
-import VideoModal from "./VideoModal";
+import { Play, X } from "lucide-react";
 
 interface Testimonial {
   name: string;
@@ -19,6 +18,62 @@ const testimonials: Testimonial[] = [
   { name: "Aline", city: "Recife", state: "PE", videoSrc: "/videos/aline-recife-pe.mp4", thumbSrc: "/thumbs/aline-recife-pe.jpg" },
   { name: "Patrícia", city: "Salvador", state: "BA", videoSrc: "/videos/patricia-salvador-ba.mp4", thumbSrc: "/thumbs/patricia-salvador-ba.jpg" },
 ];
+
+const VideoModal = ({
+  testimonial,
+  onClose,
+}: {
+  testimonial: Testimonial;
+  onClose: () => void;
+}) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleClose = useCallback(() => {
+    videoRef.current?.pause();
+    onClose();
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-foreground/80 p-4 backdrop-blur-sm"
+      onClick={handleClose}
+    >
+      <div
+        className="relative w-full max-w-lg overflow-hidden rounded-2xl bg-card shadow-lg"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={handleClose}
+          aria-label="Fechar vídeo"
+          className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-foreground/60 text-background transition-colors hover:bg-foreground/80"
+        >
+          <X className="h-4 w-4" />
+        </button>
+
+        <video
+          ref={videoRef}
+          className="aspect-[9/16] w-full bg-foreground object-contain sm:aspect-video"
+          controls
+          autoPlay
+          playsInline
+          preload="auto"
+        >
+          <source src={testimonial.videoSrc} type="video/mp4" />
+          Seu navegador não suporta vídeos.
+        </video>
+
+        <div className="p-4">
+          <p className="font-heading text-sm font-bold text-card-foreground">
+            {testimonial.name}
+          </p>
+          <p className="text-xs text-muted-foreground">
+            {testimonial.city}, {testimonial.state}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const TestimonialsGrid = () => {
   const [active, setActive] = useState<Testimonial | null>(null);
@@ -54,7 +109,7 @@ const TestimonialsGrid = () => {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.06 }}
               >
-                {/* Thumbnail — apenas <img>, sem <video> */}
+                {/* Thumbnail */}
                 <div className="aspect-[9/16] w-full bg-muted sm:aspect-video">
                   <img
                     src={t.thumbSrc}
@@ -64,21 +119,18 @@ const TestimonialsGrid = () => {
                   />
                 </div>
 
-                {/* Gradient overlay azul→rosa */}
+                {/* Gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[hsl(204,100%,40%)]/60 via-transparent to-[hsl(330,85%,50%)]/20 transition-opacity group-hover:opacity-80" />
 
-                {/* Play button — estilo vidro */}
+                {/* Play button */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/30 bg-white/20 text-white shadow-lg backdrop-blur-md transition-transform group-hover:scale-110">
-                    <Play className="h-6 w-6 fill-current drop-shadow" />
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent/90 text-accent-foreground shadow-cta transition-transform group-hover:scale-110">
+                    <Play className="h-5 w-5 fill-current" />
                   </div>
                 </div>
 
-                {/* Label + Nome + Cidade */}
+                {/* Name bar */}
                 <div className="absolute bottom-0 left-0 right-0 p-3">
-                  <span className="mb-1 inline-block rounded-full bg-accent/80 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-accent-foreground">
-                    Depoimento
-                  </span>
                   <p className="font-heading text-sm font-bold text-white drop-shadow">
                     {t.name}
                   </p>
@@ -92,15 +144,7 @@ const TestimonialsGrid = () => {
         </div>
       </section>
 
-      {active && (
-        <VideoModal
-          name={active.name}
-          city={active.city}
-          state={active.state}
-          videoSrc={active.videoSrc}
-          onClose={() => setActive(null)}
-        />
-      )}
+      {active && <VideoModal testimonial={active} onClose={() => setActive(null)} />}
     </>
   );
 };
